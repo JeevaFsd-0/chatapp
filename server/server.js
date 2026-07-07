@@ -45,11 +45,16 @@ app.use("/api/status", (req, res) => res.send("Server is live"));
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter);
 
-app.get("/", (req, res) => res.send("Api is Working"))
+app.get("/", (req, res) => res.send("Api is Working"));
 // Connect to MongoDB
 await connectDB();
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server is up and running on: localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  server.listen(PORT, () => {
+    console.log(`Server is up and running on: localhost:${PORT}`);
+  });
+}
+
+// Export server for Vercel
+export default server;
